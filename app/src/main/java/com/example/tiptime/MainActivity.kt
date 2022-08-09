@@ -8,19 +8,31 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.example.tiptime.databinding.ActivityMainBinding
 import java.text.NumberFormat
+import android.media.MediaPlayer
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+
+    //   private mediaPlayer goodClient, huiClient
+    private lateinit var mediahui: MediaPlayer
+    private lateinit var mediagood: MediaPlayer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.calculateButton.setOnClickListener { calculateTip() }
+        mediahui = MediaPlayer.create(this, R.raw.hui)
+        mediagood = MediaPlayer.create(this, R.raw.good)
+    }
+
+    private fun soundPlay(sound: MediaPlayer) {
+        sound.start()
     }
 
     private fun calculateTip() {
+        if (binding.roundUpSwitch.isChecked) soundPlay(mediagood) else soundPlay(mediahui)
         val stringInTextField = binding.costOfServiceEditText.text.toString()
         val cost = stringInTextField.toDoubleOrNull()
         if (cost == null || cost == 0.0) {
@@ -38,6 +50,7 @@ class MainActivity : AppCompatActivity() {
         }
         displayTip(tip)
     }
+
 
     private fun displayTip(tip: Double) {
         val formattedTip = NumberFormat.getCurrencyInstance().format(tip)
