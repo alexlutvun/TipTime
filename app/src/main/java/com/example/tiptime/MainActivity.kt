@@ -13,8 +13,6 @@ import android.media.MediaPlayer
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-
-    //   private mediaPlayer goodClient, huiClient
     private lateinit var mediahui: MediaPlayer
     private lateinit var mediagood: MediaPlayer
 
@@ -45,9 +43,9 @@ class MainActivity : AppCompatActivity() {
             else -> 0.15
         }
         var tip = tipPercentage * cost
-        if (binding.roundUpSwitch.isChecked) {
-            tip = kotlin.math.ceil(tip)
-        }
+        tip = if (binding.roundUpSwitch.isChecked) {
+            kotlin.math.ceil(tip)
+        } else 0.0
         displayTip(tip)
     }
 
